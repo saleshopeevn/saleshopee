@@ -26,62 +26,64 @@
     <button class="btn-outline" onclick="copyConvertedLink()">Sao chép link</button>
     <div class="note">Hệ thống chỉ nhận 1 link Shopee mỗi lần chuyển đổi.</div>
 </div>
+
 <script>
-    // Hàm tự động dán từ bộ nhớ tạm
+    // Tự động dán từ bộ nhớ tạm nhanh chóng
     async function pasteLink() {
-        try { const text = await navigator.clipboard.readText(); document.getElementById('shopeeLink').value = text; } 
-        catch (err) { alert('Vui lòng nhấn giữ vào ô nhập và dán thủ công.'); }
+        try { 
+            const text = await navigator.clipboard.readText(); 
+            document.getElementById('shopeeLink').value = text; 
+        } catch (err) { 
+            alert('Vui lòng nhấn giữ vào ô nhập và chọn Dán.'); 
+        }
     }
 
-    let globalFinalLink = "";
-
-    // HÀM XỬ LÝ GHÉP LINK DÙNG AFFILIATE ID (KHÔNG CẦN SERVER/API)
-    function handleConvert() {
-        let originalLink = document.getElementById('shopeeLink').value.trim();
-        if (!originalLink) { alert('Vui lòng nhập link Shopee trước!'); return null; }
-
-        // 🔴 THAY THẾ: Bạn điền Affiliate ID của bạn vào đây (Ví dụ: 800123456)
-        // Bạn có thể tìm thấy mã này ở góc trên trang chủ Shopee Affiliate của bạn
-        const MY_AFFILIATE_ID = "17383120585"; 
-
-        try {
-            // Cú pháp chuẩn của link chuyển đổi Shopee tự động:
-            // https://shope.ee/an-dinh?smtt=...
-            // Hoặc đơn giản là dùng định dạng link gốc kèm theo mã định danh của bạn:
-            let url = new URL(originalLink);
-            
-            // Xóa bớt các ký tự rác ẩn trong link gốc của khách dán vào
-            url.search = ""; 
-
-            // Ghép mã Affiliate ID và mẹo kích hoạt Voucher Facebook cùng một lúc
-            url.searchParams.set('utm_source', 'facebook');
-            url.searchParams.set('utm_medium', 'cpc');
-            url.searchParams.set('utm_campaign', 'fb_exclusive_voucher');
-            url.searchParams.set('aff_click_id', MY_AFFILIATE_ID); // Gắn ID hoa hồng của bạn
-            
-            globalFinalLink = url.href;
-            return globalFinalLink;
-        } catch (e) {
-            alert('Định dạng link không đúng, vui lòng thử lại.');
+    // Hàm nhận diện thiết bị để trả về Deeplink tương thích
+    function getDeeplink(originalUrl) {
+        let cleanUrl = originalUrl.trim();
+        if (!cleanUrl) {
+            alert('Vui lòng nhập link Shopee trước!');
             return null;
         }
-    }
 
-    // Nút mở thẳng App Shopee
-    function openShopee() {
-        let finalLink = handleConvert();
-        if (finalLink) { 
-            // Ép điện thoại mở ứng dụng Shopee bằng giao thức shopee://
-            window.location.href = finalLink.replace('https://', 'shopee://'); 
+        // Kiểm tra xem khách đang dùng điện thoại gì
+        let isAndroid = /Android/i.test(navigator.userAgent);
+        let isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+        // Lọc chuỗi URL thô để lấy phần đường dẫn cần thiết
+        let urlText = cleanUrl.replace('https://', '').replace('http://', '');
+
+        // XỬ LÝ ĐƯỜNG DẪN MỞ APP CHUẨN ĐÚNG THEO HỆ ĐIỀU HÀNH
+        if (isAndroid) {
+            // Định dạng Intent chuẩn ép hệ điều hành Android bật App Shopee lập tức
+            return `intent://${urlText}#Intent;scheme=https;package=com.shopee.vn;end;`;
+        } else if (isIOS) {
+            // Định dạng URL Scheme mở app trực tiếp cho dòng iPhone/iPad
+            return `shopeevn://${urlText}`;
+        } else {
+            // Nếu dùng máy tính (PC), giữ nguyên link để mở trình duyệt web thường
+            return cleanUrl;
         }
     }
 
-    // Nút copy link
+    // Xử lý nút mở app tự động
+    function openShopee() {
+        let rawLink = document.getElementById('shopeeLink').value;
+        let targetDeeplink = getDeeplink(rawLink);
+        
+        if (targetDeeplink) { 
+            window.location.href = targetDeeplink; 
+        }
+    }
+
+    // Sao chép link thô ban đầu
     function copyConvertedLink() {
-        let finalLink = handleConvert();
-        if (finalLink) { 
-            navigator.clipboard.writeText(finalLink); 
+        let rawLink = document.getElementById('shopeeLink').value.trim();
+        if (rawLink) { 
+            navigator.clipboard.writeText(rawLink); 
             alert('Đã sao chép link thành công!'); 
+        } else {
+            alert('Không có nội dung để sao chép!');
         }
     }
 </script>
