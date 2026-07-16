@@ -5,9 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đổi Link Shopee</title>
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; background-color: #f5f6f9; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; 
+            background-color: #f5f6f9; 
+            
+            /* ĐÃ CẬP NHẬT: Sử dụng file ảnh bạn vừa tải lên hosting */
+            background-image: url('background.png.jfif');
+            background-repeat: repeat;
+            background-size: 60px; /* Chỉnh kích thước to/nhỏ của logo chìm tại đây */
+            background-blend-mode: overlay;
+            
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            margin: 0; 
+            position: relative;
+        }
+
+        /* Lớp phủ giúp làm mờ logo chìm để không bị rối mắt */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(245, 246, 249, 0.94); /* Tăng số này (ví dụ 0.96) nếu muốn logo mờ hơn */
+            z-index: -1;
+        }
         
-        /* Cập nhật đổ bóng màu cam thương hiệu đổ lan rộng */
         .container { 
             background: #ffffff; 
             border-radius: 16px; 
@@ -17,6 +41,7 @@
             box-shadow: 0 15px 35px rgba(226, 88, 34, 0.15), 0 5px 15px rgba(0, 0, 0, 0.05); 
             text-align: center; 
             position: relative;
+            z-index: 1;
         }
         
         .copyright-tag {
