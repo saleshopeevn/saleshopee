@@ -16,7 +16,7 @@
         .btn-outline { background-color: #f0f2f5; color: #65676b; }
         .note { font-size: 12px; color: #8a8d91; margin-top: 16px; }
         
-        /* CSS cho dòng trạng thái */
+        /* Cấu hình dòng trạng thái hiển thị */
         .status-msg { font-size: 14px; font-weight: 500; margin: 10px 0; min-height: 20px; transition: color 0.2s; }
         .status-loading { color: #e25822; }
         .status-success { color: #28a745; }
@@ -28,7 +28,6 @@
     <h2>Mở nhanh áp mã Facebook <span class="badge">Chỉ 1 link/lần</span></h2>
     <input type="text" id="shopeeLink" placeholder="Dán link Shopee vào đây...">
     
-    <!-- Vùng hiển thị trạng thái chuyển link -->
     <div id="statusMessage" class="status-msg"></div>
 
     <button class="btn-primary" onclick="pasteLink()">Dán sản phẩm</button>
@@ -38,7 +37,6 @@
 </div>
 
 <script>
-    // Hàm hiển thị trạng thái chữ màu động
     function showStatus(text, type) {
         const statusEl = document.getElementById('statusMessage');
         statusEl.innerText = text;
@@ -48,7 +46,6 @@
         if (type === 'error') statusEl.classList.add('status-error');
     }
 
-    // Tự động dán từ bộ nhớ tạm và kích hoạt luồng xử lý nhanh
     async function pasteLink() {
         try { 
             const text = await navigator.clipboard.readText(); 
@@ -61,28 +58,34 @@
         }
     }
 
-    // Hàm nhận diện, kiểm tra tính hợp lệ và xuất Deeplink mở App
     function processLinkAndGetDeeplink(originalUrl) {
-        let cleanUrl = originalUrl.trim();
-        if (!cleanUrl) {
+        let textContainer = originalUrl.trim();
+        if (!textContainer) {
             showStatus('Vui lòng nhập hoặc dán link trước!', 'error');
             return null;
         }
 
         showStatus('Đang chuyển link...', 'loading');
 
-        // Bộ lọc Regex đã sửa lỗi chữ hoa/chữ thường (thêm cờ i)
-        const shopeePattern = /shopee\.vn|shope\.ee|s\.shopee\.vn/i;
-        
-        if (!shopeePattern.test(cleanUrl)) {
+        // BỘ LỌC ĐÃ NÂNG CẤP: Chấp nhận mọi chuỗi miễn là chứa từ khóa của Shopee
+        const checkValid = /shopee|shope\.ee/i;
+        if (!checkValid.test(textContainer)) {
             showStatus('Invalid non-shopee URL', 'error');
             return null;
         }
 
+        // Tự động tìm đoạn bắt đầu bằng http hoặc https để tách link sạch ra khỏi text rác
+        let cleanUrl = textContainer;
+        const urlExtract = /(https?:\/\/[^\s]+)/i;
+        const match = textContainer.match(urlExtract);
+        if (match) {
+            cleanUrl = match[1];
+        }
+        
+        document.getElementById('shopeeLink').value = cleanUrl; 
+
         let isAndroid = /Android/i.test(navigator.userAgent);
         let isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
-        
-        // Làm sạch giao thức đầu link
         let urlText = cleanUrl.replace(/^https?:\/\//i, '');
 
         let finalDeeplink = cleanUrl;
@@ -96,7 +99,6 @@
         return finalDeeplink;
     }
 
-    // Xử lý khi nhấn nút mở app hoặc kích hoạt sau khi dán
     function openShopee() {
         let rawLink = document.getElementById('shopeeLink').value;
         let targetDeeplink = processLinkAndGetDeeplink(rawLink);
@@ -108,13 +110,12 @@
         }
     }
 
-    // Xử lý nút copy link
     function copyConvertedLink() {
         let rawLink = document.getElementById('shopeeLink').value;
         let targetDeeplink = processLinkAndGetDeeplink(rawLink);
         
         if (targetDeeplink) { 
-            let linkToCopy = rawLink.trim(); 
+            let linkToCopy = document.getElementById('shopeeLink').value.trim(); 
             navigator.clipboard.writeText(linkToCopy); 
             showStatus('Đã sao chép link thành công!', 'success');
         }
