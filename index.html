@@ -29,7 +29,7 @@
             overflow: hidden; /* Giữ hình nền chìm không tràn ra khỏi bo góc */
         }
         
-        /* Đã sửa: Đưa hình nền chìm vào riêng bên trong khung container, chỉ hiện 1 hình duy nhất */
+       /* Đưa hình nền chìm vào riêng bên trong khung container, chỉ hiện 1 hình duy nhất */
         .container::before {
             content: "";
             position: absolute;
@@ -37,11 +37,10 @@
             background-image: url('background.jfif');
             background-repeat: no-repeat; /* KHÔNG lặp lại hình ảnh */
             background-position: center; /* Căn hình ảnh nằm chính giữa khung */
-            background-size: contain; /* Tự co giãn vừa vặn bên trong khung (hoặc đổi thành cover nếu muốn tràn viền khung) */
+            background-size: cover; /* ĐÃ SỬA: Tự động phóng to lấp đầy tràn hết viền khung */
             opacity: 0.08; /* Độ mờ chìm (0.08 = 8%). Tăng lên nếu bạn thấy quá nhạt */
             z-index: -1;
         }
-        
         .copyright-tag {
             position: absolute;
             top: 10px;
