@@ -5,33 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đổi Link Shopee</title>
     <style>
-        body { 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; 
-            background-color: #f5f6f9; 
-            
-            /* ĐÃ CẬP NHẬT: Sử dụng file ảnh bạn vừa tải lên hosting */
-            background-image: url('background.jfif');
-            background-repeat: repeat;
-            background-size: 60px; /* Chỉnh kích thước to/nhỏ của logo chìm tại đây */
-            background-blend-mode: overlay;
-            
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            height: 100vh; 
-            margin: 0; 
-            position: relative;
-        }
+       body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    background-color: #f5f6f9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    position: relative;
+}
 
-        /* Lớp phủ giúp làm mờ logo chìm để không bị rối mắt */
-        body::before {
-            content: "";
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(245, 246, 249, 0.94); /* Tăng số này (ví dụ 0.96) nếu muốn logo mờ hơn */
-            z-index: -1;
-        }
-        
+/* Lớp phủ chứa hình nền chìm được xử lý chuyên nghiệp */
+body::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: url('background.jfif');
+    background-repeat: repeat;
+    background-size: 80px; /* Bạn có thể chỉnh 60px hoặc 80px tùy độ to nhỏ muốn hiển thị */
+    opacity: 0.08; /* Chỉ số này quyết định độ chìm. Hãy chỉnh từ 0.05 đến 0.15 để vừa mắt nhất */
+    z-index: -1;
+}
         .container { 
             background: #ffffff; 
             border-radius: 16px; 
