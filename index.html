@@ -29,14 +29,15 @@
             overflow: hidden; /* Giữ hình nền chìm không tràn ra khỏi bo góc */
         }
         
-        /* Đưa hình nền chìm vào riêng bên trong khung container */
+        /* Đã sửa: Đưa hình nền chìm vào riêng bên trong khung container, chỉ hiện 1 hình duy nhất */
         .container::before {
             content: "";
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
             background-image: url('background.jfif');
-            background-repeat: repeat;
-            background-size: 70px; /* Kích thước to nhỏ của logo chìm */
+            background-repeat: no-repeat; /* KHÔNG lặp lại hình ảnh */
+            background-position: center; /* Căn hình ảnh nằm chính giữa khung */
+            background-size: contain; /* Tự co giãn vừa vặn bên trong khung (hoặc đổi thành cover nếu muốn tràn viền khung) */
             opacity: 0.08; /* Độ mờ chìm (0.08 = 8%). Tăng lên nếu bạn thấy quá nhạt */
             z-index: -1;
         }
