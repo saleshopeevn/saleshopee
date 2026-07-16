@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mở Nhanh Áp Mã Facebook</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; background-color: #f5f6f9; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .container { background: #ffffff; border-radius: 16px; padding: 24px; width: 90%; max-width: 400px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); text-align: center; }
+        h2 { color: #1c1e21; font-size: 18px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+        .badge { background: #e4e6eb; font-size: 12px; padding: 4px 8px; border-radius: 12px; color: #65676b; }
+        input { width: 100%; padding: 14px; border: 1px solid #ced4da; border-radius: 8px; box-sizing: border-box; font-size: 15px; margin-bottom: 16px; outline: none; }
+        button { width: 100%; padding: 14px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-bottom: 12px; }
+        .btn-primary { background-color: #4267b2; color: white; }
+        .btn-secondary { background-color: #e25822; color: #ffffff; }
+        .btn-outline { background-color: #f0f2f5; color: #65676b; }
+        .note { font-size: 12px; color: #8a8d91; margin-top: 16px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Mở nhanh áp mã Facebook <span class="badge">Chỉ 1 link/lần</span></h2>
+    <input type="text" id="shopeeLink" placeholder="Dán link Shopee vào đây...">
+    <button class="btn-primary" onclick="pasteLink()">Dán sản phẩm</button>
+    <button class="btn-secondary" onclick="openShopee()">Mở nhanh áp mã FB</button>
+    <button class="btn-outline" onclick="copyConvertedLink()">Sao chép link</button>
+    <div class="note">Hệ thống tự động chuyển đổi sang link hoa hồng của bạn.</div>
+</div>
+<script>
+    async function pasteLink() {
+        try { const text = await navigator.clipboard.readText(); document.getElementById('shopeeLink').value = text; } 
+        catch (err) { alert('Vui lòng nhấn giữ vào ô nhập và dán thủ công.'); }
+    }
+    let globalFinalLink = "";
+    async function handleConvert() {
+        let originalLink = document.getElementById('shopeeLink').value.trim();
+        if (!originalLink) { alert('Vui lòng nhập link Shopee trước!'); return null; }
+        const btnSecondary = document.querySelector('.btn-secondary');
+        btnSecondary.innerText = "Đang tạo link...";
+        try {
+            const response = await fetch('/api/convert', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ originalLink: originalLink })
+            });
+            const data = await response.json();
+            if (data.success) {
+                globalFinalLink = data.link;
+                btnSecondary.innerText = "Mở nhanh áp mã FB";
+                return globalFinalLink;
+            } else {
+                alert('Lỗi: ' + data.message);
+                btnSecondary.innerText = "Mở nhanh áp mã FB";
+                return null;
+            }
+        } catch (err) {
+            alert('Lỗi kết nối máy chủ.');
+            btnSecondary.innerText = "Mở nhanh áp mã FB";
+            return null;
+        }
+    }
+    async function openShopee() {
+        let finalLink = await handleConvert();
+        if (finalLink) { window.location.href = finalLink.replace('https://', 'shopee://'); }
+    }
+    async function copyConvertedLink() {
+        if (!globalFinalLink) { await handleConvert(); }
+        if (globalFinalLink) { navigator.clipboard.writeText(globalFinalLink); alert('Đã sao chép link thành công!'); }
+    }
+</script>
+</body>
+</html>
