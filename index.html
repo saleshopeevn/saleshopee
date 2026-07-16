@@ -5,38 +5,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đổi Link Shopee</title>
     <style>
-       body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-    background-color: #f5f6f9;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    position: relative;
-}
-
-/* Lớp phủ chứa hình nền chìm được xử lý chuyên nghiệp */
-body::before {
-    content: "";
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background-image: url('background.jfif');
-    background-repeat: repeat;
-    background-size: 80px; /* Bạn có thể chỉnh 60px hoặc 80px tùy độ to nhỏ muốn hiển thị */
-    opacity: 0.08; /* Chỉ số này quyết định độ chìm. Hãy chỉnh từ 0.05 đến 0.15 để vừa mắt nhất */
-    z-index: -1;
-}
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; 
+            background-color: #f5f6f9; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            margin: 0; 
+        }
+        
+        /* Khung container chính chứa đổ bóng màu cam thương hiệu */
         .container { 
             background: #ffffff; 
             border-radius: 16px; 
             padding: 32px 24px 24px 24px; 
             width: 90%; 
             max-width: 400px; 
-            box-shadow: 0 15px 35px rgba(226, 88, 34, 0.15), 0 5px 15px rgba(0, 0, 0, 0.05); 
+            box-shadow: 0 15px 35px rgba(226, 88, 34, 0.18), 0 5px 15px rgba(0, 0, 0, 0.05); 
             text-align: center; 
             position: relative;
             z-index: 1;
+            overflow: hidden; /* Giữ hình nền chìm không tràn ra khỏi bo góc */
+        }
+        
+        /* Đưa hình nền chìm vào riêng bên trong khung container */
+        .container::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: url('background.jfif');
+            background-repeat: repeat;
+            background-size: 70px; /* Kích thước to nhỏ của logo chìm */
+            opacity: 0.08; /* Độ mờ chìm (0.08 = 8%). Tăng lên nếu bạn thấy quá nhạt */
+            z-index: -1;
         }
         
         .copyright-tag {
@@ -48,21 +50,21 @@ body::before {
             font-weight: 500;
         }
 
-        h2 { color: #1c1e21; font-size: 18px; margin-bottom: 5px; font-weight: bold; }
-        .sub-title { color: #65676b; font-size: 13px; margin-bottom: 20px; font-style: italic; }
-        .input-title { text-align: left; color: #1c1e21; font-size: 14px; font-weight: 500; margin-bottom: 8px; }
-        input { width: 100%; padding: 14px; border: 1px solid #ced4da; border-radius: 8px; box-sizing: border-box; font-size: 15px; margin-bottom: 8px; outline: none; }
+        h2 { color: #1c1e21; font-size: 18px; margin-bottom: 5px; font-weight: bold; position: relative; }
+        .sub-title { color: #65676b; font-size: 13px; margin-bottom: 20px; font-style: italic; position: relative; }
+        .input-title { text-align: left; color: #1c1e21; font-size: 14px; font-weight: 500; margin-bottom: 8px; position: relative; }
+        input { width: 100%; padding: 14px; border: 1px solid #ced4da; border-radius: 8px; box-sizing: border-box; font-size: 15px; margin-bottom: 8px; outline: none; position: relative; background: rgba(255, 255, 255, 0.9); }
         
-        .status-msg { font-size: 13px; font-weight: 500; margin: 4px 0 12px 0; min-height: 18px; transition: color 0.2s; }
+        .status-msg { font-size: 13px; font-weight: 500; margin: 4px 0 12px 0; min-height: 18px; transition: color 0.2s; position: relative; }
         .status-loading { color: #e25822; }
         .status-success { color: #28a745; }
         .status-error { color: #dc3545; }
 
-        button { width: 100%; padding: 14px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-bottom: 12px; }
+        button { width: 100%; padding: 14px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-bottom: 12px; position: relative; }
         .btn-primary { background-color: #4267b2; color: white; }
         .btn-secondary { background-color: #e25822; color: #ffffff; }
         .btn-outline { background-color: #f0f2f5; color: #65676b; }
-        .note { font-size: 12px; color: #8a8d91; margin-top: 16px; }
+        .note { font-size: 12px; color: #8a8d91; margin-top: 16px; position: relative; }
     </style>
 </head>
 <body>
