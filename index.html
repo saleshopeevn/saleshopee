@@ -6,31 +6,59 @@
     <title>Đổi Link Shopee</title>
     <style>
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; background-color: #f5f6f9; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .container { background: #ffffff; border-radius: 16px; padding: 24px; width: 90%; max-width: 400px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); text-align: center; }
+        
+        /* Khung container tối ưu đổ bóng mềm và bo góc như trang mẫu */
+        .container { 
+            background: #ffffff; 
+            border-radius: 16px; 
+            padding: 32px 24px 24px 24px; 
+            width: 90%; 
+            max-width: 400px; 
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.04); 
+            text-align: center; 
+            position: relative; /* Để định vị nhãn bản quyền ở góc */
+        }
+        
+        /* Nhãn bản quyền ở góc trên bên phải khung */
+        .copyright-tag {
+            position: absolute;
+            top: 10px;
+            right: 14px;
+            font-size: 10px;
+            color: #b0b3b8;
+            font-weight: 500;
+        }
+
         h2 { color: #1c1e21; font-size: 18px; margin-bottom: 5px; font-weight: bold; }
         .sub-title { color: #65676b; font-size: 13px; margin-bottom: 20px; font-style: italic; }
         .input-title { text-align: left; color: #1c1e21; font-size: 14px; font-weight: 500; margin-bottom: 8px; }
-        input { width: 100%; padding: 14px; border: 1px solid #ced4da; border-radius: 8px; box-sizing: border-box; font-size: 15px; margin-bottom: 16px; outline: none; }
+        input { width: 100%; padding: 14px; border: 1px solid #ced4da; border-radius: 8px; box-sizing: border-box; font-size: 15px; margin-bottom: 8px; outline: none; }
+        
+        /* Thu hẹp tối đa khoảng trống vùng trạng thái */
+        .status-msg { font-size: 13px; font-weight: 500; margin: 4px 0 12px 0; min-height: 18px; transition: color 0.2s; }
+        .status-loading { color: #e25822; }
+        .status-success { color: #28a745; }
+        .status-error { color: #dc3545; }
+
         button { width: 100%; padding: 14px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-bottom: 12px; }
         .btn-primary { background-color: #4267b2; color: white; }
         .btn-secondary { background-color: #e25822; color: #ffffff; }
         .btn-outline { background-color: #f0f2f5; color: #65676b; }
         .note { font-size: 12px; color: #8a8d91; margin-top: 16px; }
-        
-        .status-msg { font-size: 14px; font-weight: 500; margin: 10px 0; min-height: 20px; transition: color 0.2s; }
-        .status-loading { color: #e25822; }
-        .status-success { color: #28a745; }
-        .status-error { color: #dc3545; }
     </style>
 </head>
 <body>
 <div class="container">
+    <!-- Góc nhỏ hiển thị nội dung bản quyền -->
+    <div class="copyright-tag">Bản quyền thuộc Duy Huỳnh</div>
+
     <h2>Đổi link Shopee có mã toàn sàn</h2>
     <div class="sub-title">Chỉ 1 link/lần</div>
     
     <div class="input-title">Nhập link Shopee</div>
     <input type="text" id="shopeeLink" placeholder="https://shopee.vn/...">
     
+    <!-- Vùng hiển thị trạng thái đã được ép gọn khoảng cách -->
     <div id="statusMessage" class="status-msg"></div>
 
     <button class="btn-primary" onclick="pasteLink()">Dán sản phẩm</button>
@@ -50,7 +78,6 @@
         if (type === 'error') statusEl.classList.add('status-error');
     }
 
-    // Đã chỉnh sửa: Nút chỉ lấy text từ bộ nhớ tạm điền vào ô nhập, không tự động kích hoạt mở app nữa
     async function pasteLink() {
         try { 
             const text = await navigator.clipboard.readText(); 
@@ -94,7 +121,6 @@
         return finalDeeplink;
     }
 
-    // Luồng mở app Shopee chỉ kích hoạt khi nhấn trực tiếp nút "Nhận voucher"
     function openShopee() {
         let rawLink = document.getElementById('shopeeLink').value;
         let targetDeeplink = processLinkAndGetDeeplink(rawLink);
