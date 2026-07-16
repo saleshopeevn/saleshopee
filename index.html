@@ -50,13 +50,12 @@
         if (type === 'error') statusEl.classList.add('status-error');
     }
 
+    // Đã chỉnh sửa: Nút chỉ lấy text từ bộ nhớ tạm điền vào ô nhập, không tự động kích hoạt mở app nữa
     async function pasteLink() {
         try { 
             const text = await navigator.clipboard.readText(); 
             document.getElementById('shopeeLink').value = text; 
-            if (text.trim()) {
-                openShopee();
-            }
+            showStatus('Đã dán link từ bộ nhớ tạm.', 'success');
         } catch (err) { 
             showStatus('Không thể tự động dán, vui lòng nhấn giữ ô nhập để dán thủ công.', 'error');
         }
@@ -95,6 +94,7 @@
         return finalDeeplink;
     }
 
+    // Luồng mở app Shopee chỉ kích hoạt khi nhấn trực tiếp nút "Nhận voucher"
     function openShopee() {
         let rawLink = document.getElementById('shopeeLink').value;
         let targetDeeplink = processLinkAndGetDeeplink(rawLink);
