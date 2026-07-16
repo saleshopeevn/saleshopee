@@ -3,17 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lấy Mã Giảm Giá Shopee Toàn Sàn</title>
+    <title>Đổi Link Shopee</title>
     <style>
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; background-color: #f5f6f9; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
         .container { background: #ffffff; border-radius: 16px; padding: 24px; width: 90%; max-width: 400px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); text-align: center; }
-        h2 { color: #1c1e21; font-size: 18px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
-        .badge { background: #e4e6eb; font-size: 12px; padding: 4px 8px; border-radius: 12px; color: #65676b; }
+        h2 { color: #1c1e21; font-size: 18px; margin-bottom: 5px; font-weight: bold; }
+        .sub-title { color: #65676b; font-size: 13px; margin-bottom: 20px; font-style: italic; }
+        .input-title { text-align: left; color: #1c1e21; font-size: 14px; font-weight: 500; margin-bottom: 8px; }
         input { width: 100%; padding: 14px; border: 1px solid #ced4da; border-radius: 8px; box-sizing: border-box; font-size: 15px; margin-bottom: 16px; outline: none; }
         button { width: 100%; padding: 14px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-bottom: 12px; }
         .btn-primary { background-color: #4267b2; color: white; }
         .btn-secondary { background-color: #e25822; color: #ffffff; }
         .btn-outline { background-color: #f0f2f5; color: #65676b; }
+        .btn-success { background-color: #28a745; color: #ffffff; }
         .note { font-size: 12px; color: #8a8d91; margin-top: 16px; }
         
         .status-msg { font-size: 14px; font-weight: 500; margin: 10px 0; min-height: 20px; transition: color 0.2s; }
@@ -24,17 +26,22 @@
 </head>
 <body>
 <div class="container">
-    <h2>Lấy Mã Giảm Giá Shopee Toàn Sàn <span class="badge">Chỉ 1 link/lần</span></h2>
-    <input type="text" id="shopeeLink" placeholder="Dán link Shopee vào đây...">
+    <h2>Đổi link Shopee có mã toàn sàn</h2>
+    <div class="sub-title">Chỉ 1 link/lần</div>
+    
+    <div class="input-title">Nhập link Shopee</div>
+    <input type="text" id="shopeeLink" placeholder="https://shopee.vn/...">
     
     <div id="statusMessage" class="status-msg"></div>
 
     <button class="btn-primary" onclick="pasteLink()">Dán sản phẩm</button>
-    <button class="btn-secondary" onclick="openShopee()">Nhận Voucher</button>
+    <button class="btn-secondary" onclick="openShopee()">Nhận voucher</button>
     <button class="btn-outline" onclick="copyConvertedLink()">Sao chép</button>
+    <button class="btn-success" onclick="openShopee()">Mở nhanh qua Shopee</button>
+    
     <div class="note">Hệ thống chỉ nhận 1 link Shopee mỗi lần chuyển đổi.</div>
 </div>
-   
+
 <script>
     function showStatus(text, type) {
         const statusEl = document.getElementById('statusMessage');
@@ -64,9 +71,8 @@
             return null;
         }
 
-        showStatus('Đang duyệt mã...', 'loading');
+        showStatus('Đang chuyển link...', 'loading');
 
-        // ĐÃ XOÁ BỎ HOÀN TOÀN BỘ LỌC KIỂM TRA ĐỂ TRÁNH BÁO LỖI OAN
         let cleanUrl = textContainer;
         const urlExtract = /(https?:\/\/[^\s]+)/i;
         const match = textContainer.match(urlExtract);
@@ -87,7 +93,7 @@
             finalDeeplink = `shopeevn://${urlText}`;
         }
 
-        showStatus('Hệ thống Shopee đã duyệt mã giảm giá thành công!', 'success');
+        showStatus('Đã chuyển link thành công!', 'success');
         return finalDeeplink;
     }
 
